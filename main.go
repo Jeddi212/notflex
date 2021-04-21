@@ -15,6 +15,7 @@ func main() {
 	db.AutoMigrate(&model.Admin{}, &model.Member{}, &model.Film{})
 
 	router := mux.NewRouter()
+	router.HandleFunc("/login", controller.CheckUserLogin).Methods("GET")
 
 	http.Handle("/", router)
 	fmt.Println("Connected to port 8080")

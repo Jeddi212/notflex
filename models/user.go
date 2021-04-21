@@ -3,6 +3,7 @@ package models
 type User struct {
 	Email    string `form:"email" json:"id" gorm:"primaryKey"`
 	Password string `form:"password" json:"password"`
+	Level    string `form:"level" json:"password"`
 }
 
 // func (user *User) SetUser(email string, password string) {
