@@ -1,2 +1,2 @@
 # notflex
-Small REST-API
+Small **REST-API** build in Golang
