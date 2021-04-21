@@ -16,4 +16,6 @@ func main() {
 	admin.User.SetUser("AA", "ASDF")
 	fmt.Println(admin.GetEmail())
 	fmt.Println(admin.GetPassword())
+	fmt.Println("Tes")
+	fmt.Println("Gaskeun")
 }
