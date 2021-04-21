@@ -2,20 +2,21 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
+	"github.com/gorilla/mux"
+	controller "github.com/notflex/controllers"
 	model "github.com/notflex/models"
 )
 
 func main() {
-	fmt.Println("Notflex Asoy")
-	var admin model.Admin
-	// admin.SetAdmin("@gmail.com", "123")
-	// admin.
-	// fmt.Println(admin.GetPassword())
-	// fmt.Println(admin.GetEmail())
-	admin.User.SetUser("AA", "ASDF")
-	fmt.Println(admin.GetEmail())
-	fmt.Println(admin.GetPassword())
-	fmt.Println("Tes")
-	fmt.Println("Gaskeun")
+	db := controller.Connect()
+	db.AutoMigrate(&model.Admin{}, &model.Member{}, &model.Film{})
+
+	router := mux.NewRouter()
+
+	http.Handle("/", router)
+	fmt.Println("Connected to port 8080")
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
