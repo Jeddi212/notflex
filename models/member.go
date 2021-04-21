@@ -11,8 +11,6 @@ type Member struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
-	// Email string `form:"email" json:"email"`
-	// Password string `form:"password" json:"password"`
 	User
 	name        string `form:"name" json:"name"`
 	birthDate   string `form:"birthdate" json:"birthdate"`
