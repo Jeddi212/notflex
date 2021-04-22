@@ -14,12 +14,16 @@ func CheckUserLogin(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
 	if err := db.Where("email = ?", email[0]).First(&user).Error; err == nil {
-		if user.Level == 1 {
-			generateToken(w, user.Email, 1)
-		} else if user.Level == 0 {
-			generateToken(w, user.Email, 0)
+		if user.Status == "active" {
+			if user.Level == 1 {
+				generateToken(w, user.Email, 1)
+			} else if user.Level == 0 {
+				generateToken(w, user.Email, 0)
+			}
+			sendSuccessResponse(w)
+		} else if user.Status == "suspend" {
+			sendSuspendResponse(w)
 		}
-		sendSuccessResponse(w)
 	} else {
 		sendErrorResponse(w)
 	}
@@ -48,6 +52,14 @@ func sendErrorResponse(w http.ResponseWriter) {
 	var response models.ErrorResponse
 	response.Status = 400
 	response.Message = "Failed"
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func sendSuspendResponse(w http.ResponseWriter) {
+	var response models.ErrorResponse
+	response.Status = 400
+	response.Message = "Suspended"
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
