@@ -16,11 +16,17 @@ func main() {
 	// member level 1
 	// admin level 0
 	router := mux.NewRouter()
+
+	// User Related Request
 	router.HandleFunc("/login", controller.CheckUserLogin).Methods("GET")
 	router.HandleFunc("/logout", controller.Logout).Methods("GET")
 	router.HandleFunc("/registration", controller.InsertMember).Methods("POST")
 	router.HandleFunc("/get-user", controller.GetUser).Methods("GET")
 	router.HandleFunc("/suspend", controller.SuspendUser).Methods("PUT")
+
+	// Film Related Request
+	router.HandleFunc("/add-film", controller.AddFilm).Methods("POST")
+
 	http.Handle("/", router)
 	fmt.Println("Connected to port 1234")
 	log.Fatal(http.ListenAndServe(":1234", router))
