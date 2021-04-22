@@ -26,6 +26,7 @@ func main() {
 
 	// Film Related Request
 	router.HandleFunc("/add-film", controller.AddFilm).Methods("POST")
+	router.HandleFunc("/edit-film/{film_id}", controller.EditFilm).Methods("PUT")
 
 	http.Handle("/", router)
 	fmt.Println("Connected to port 1234")
