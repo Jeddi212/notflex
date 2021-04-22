@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-// GetUser
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
@@ -49,7 +48,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		response.Data = users
 	} else {
 		// Output to console
-		fmt.Println("Get Data Failed\n")
+		fmt.Println("Get Data Failed")
+		fmt.Println()
 
 		response.Status = 204
 		response.Message = "Not Found, No Content"
@@ -59,7 +59,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-// SuspendUser
 func SuspendUser(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
