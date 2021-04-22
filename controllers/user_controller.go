@@ -2,18 +2,21 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/notflex/models"
+	"gorm.io/gorm"
 )
 
 func CheckUserLogin(w http.ResponseWriter, r *http.Request) {
 	db := Connect()
 
 	email := r.URL.Query()["email"]
+	password := r.URL.Query()["password"]
 	var user models.User
 
-	if err := db.Where("email = ?", email[0]).First(&user).Error; err == nil {
+	if err := db.Where("email = ? AND password = ?", email[0], password[0]).First(&user).Error; err == nil {
 		if user.Status == "active" {
 			if user.Level == 1 {
 				generateToken(w, user.Email, 1)
@@ -68,6 +71,60 @@ func sendUnauthorizedResponse(w http.ResponseWriter) {
 	var response models.ErrorResponse
 	response.Status = 401
 	response.Message = "Unauthorized Access"
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func InsertMember(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+
+	email := r.Form.Get("email")
+	password := r.Form.Get("password")
+	name := r.Form.Get("name")
+	birthDate := r.Form.Get("birthdate")
+	gender := r.Form.Get("gender")
+	nationality := r.Form.Get("nationality")
+	ccNumber := r.Form.Get("creditCardNumber")
+	exp := r.Form.Get("expire")
+	cvc := r.Form.Get("cvc")
+
+	var userCek models.User
+	var response models.UserResponse
+	err = db.Where("email = ?", email).First(&userCek).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) == true {
+		cc := models.Credit{CardNumber: ccNumber, Exp: exp, Cvc: cvc}
+		user := models.User{Email: email, Password: password, Name: name, BirthDate: birthDate, Gender: gender, Nationality: nationality, Status: "active", Level: 1, CreditID: ccNumber}
+
+		if ccNumber != "" {
+			var ccCek models.Credit
+			err = db.Where("card_number = ?", ccNumber).First(&ccCek).Error
+			if errors.Is(err, gorm.ErrRecordNotFound) == true {
+				db.Create(&cc)
+				if err := db.Create(&user).Error; err == nil {
+					response.Status = 200
+					response.Message = "Registration success"
+				} else {
+					db.Where("card_number = ?", ccNumber).Delete(&cc)
+					response.Status = 400
+					response.Message = "Registration failed"
+				}
+			} else {
+				response.Status = 400
+				response.Message = "Credit card number has been registrered"
+			}
+		} else {
+			response.Status = 400
+			response.Message = "Registration credit card failed"
+		}
+	} else {
+		response.Status = 400
+		response.Message = "Email or has been taken"
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
