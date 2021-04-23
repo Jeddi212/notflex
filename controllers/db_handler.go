@@ -15,7 +15,7 @@ func Connect() *gorm.DB {
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
 			SlowThreshold: time.Second, // Slow SQL threshold
-			LogLevel:      logger.Info, // Log level  // Ignore ErrRecordNotFound error for logger
+			LogLevel:      logger.Silent, // Log level  // Ignore ErrRecordNotFound error for logger
 			Colorful:      false,       // Disable color
 		},
 	)
