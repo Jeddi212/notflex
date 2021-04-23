@@ -38,7 +38,7 @@ func AddFilm(w http.ResponseWriter, r *http.Request) {
 	result := db.Create(&film)
 
 	// Set response
-	var response model.UserResponse
+	var response model.FilmResponse
 	if result.Error == nil {
 		// Output to console
 		//printUser(film)
@@ -104,9 +104,7 @@ func EditFilm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Set response
-	var response model.UserResponse
-
-	// Save (update) film object to database
+	var response model.FilmResponse
 	if err == nil {
 		result := db.Save(&film)
 		if result.Error == nil {
@@ -130,7 +128,83 @@ func EditFilm(w http.ResponseWriter, r *http.Request) {
 		fmt.Println()
 
 		response.Status = 400
-		response.Message = "Edit Film Data Failed, ID Not Valid"
+		response.Message = "Edit Film Data Failed, ID Not Valid " + err.Error()
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func SearchFilm(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	var films []model.Film
+
+	// Get film data
+	title := r.URL.Query()["title"]
+	genre := r.URL.Query()["genre"]
+	year := r.URL.Query()["year"]
+	director := r.URL.Query()["director"]
+	actor := r.URL.Query()["actor"]
+	synopsis := r.URL.Query()["synopsis"]
+
+	// Inialize db
+	query := db
+
+	// Set where condition
+	if title != nil {
+		titles := "%" + title[0] + "%"
+		query = query.Where("title LIKE ?", titles)
+	}
+	if genre != nil {
+		genres := "%" + genre[0] + "%"
+		query = query.Where("genre LIKE ?", genres)
+	}
+	if year != nil {
+		query = query.Where("year = ?", year[0])
+	}
+	if director != nil {
+		directors := "%" + director[0] + "%"
+		query = query.Where("director LIKE ?", directors)
+	}
+	if synopsis != nil {
+		synopsises := "%" + synopsis[0] + "%"
+		query = query.Where("synopsis LIKE ?", synopsises)
+	}
+	if actor != nil {
+		actors := "%" + actor[0] + "%"
+		query = query.Where("actor LIKE ?", actors)
+	}
+
+	// Finish the query
+	result := query.Find(&films).Error
+
+	// Set response
+	var response model.FilmResponse
+	if result == nil {
+		if len(films) > 0 {
+			// Output to console
+			//printUser(film)
+			fmt.Println("Success search film")
+			fmt.Println()
+
+			response.Status = 200
+			response.Message = "Success Search Film"
+			response.Data = films
+		} else {
+			// Output to console
+			fmt.Println("Film not found\n")
+
+			response.Status = 400
+			response.Message = "Film not found"
+		}
+	} else {
+		// Output to console
+		fmt.Println("Search Film Failed\n" + result.Error())
+		fmt.Println()
+
+		response.Status = 400
+		response.Message = "Search Film Failed " + result.Error()
 	}
 
 	w.Header().Set("Content-Type", "application/json")

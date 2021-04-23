@@ -26,6 +26,7 @@ func main() {
 	router.HandleFunc("/updateProfile", controller.UpdateMember).Methods("PUT")
 
 	// Film Related Request
+	router.HandleFunc("/search-film", controller.SearchFilm).Methods("GET")
 	router.HandleFunc("/add-film", controller.AddFilm).Methods("POST")
 	router.HandleFunc("/edit-film/{film_id}", controller.EditFilm).Methods("PUT")
 
