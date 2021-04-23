@@ -23,6 +23,7 @@ func main() {
 	router.HandleFunc("/registration", controller.InsertMember).Methods("POST")
 	router.HandleFunc("/get-user", controller.GetUser).Methods("GET")
 	router.HandleFunc("/suspend", controller.SuspendUser).Methods("PUT")
+	router.HandleFunc("/updateProfile", controller.UpdateMember).Methods("PUT")
 
 	// Film Related Request
 	router.HandleFunc("/add-film", controller.AddFilm).Methods("POST")
