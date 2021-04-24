@@ -3,9 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gormExplore/model"
 	"net/http"
 	"time"
+
+	"github.com/gormExplore/model"
 
 	"github.com/notflex/models"
 )
