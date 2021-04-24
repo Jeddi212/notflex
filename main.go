@@ -21,14 +21,14 @@ func main() {
 	router.HandleFunc("/login", controller.CheckUserLogin).Methods("GET")
 	router.HandleFunc("/logout", controller.Logout).Methods("GET")
 	router.HandleFunc("/registration", controller.InsertMember).Methods("POST")
-	router.HandleFunc("/get-user", controller.GetUser).Methods("GET")
-	router.HandleFunc("/suspend", controller.SuspendUser).Methods("PUT")
-	router.HandleFunc("/updateProfile", controller.UpdateMember).Methods("PUT")
+	router.HandleFunc("/get-user", controller.Authenticate(controller.GetUser, 0)).Methods("GET")
+	router.HandleFunc("/suspend", controller.Authenticate(controller.SuspendUser, 0)).Methods("PUT")
+	router.HandleFunc("/updateProfile", controller.Authenticate(controller.UpdateMember, 1)).Methods("PUT")
 
 	// Film Related Request
-	router.HandleFunc("/search-film", controller.SearchFilm).Methods("GET")
-	router.HandleFunc("/add-film", controller.AddFilm).Methods("POST")
-	router.HandleFunc("/edit-film/{film_id}", controller.EditFilm).Methods("PUT")
+	router.HandleFunc("/search-film", controller.Authenticate(controller.SearchFilm, 1)).Methods("GET")
+	router.HandleFunc("/add-film", controller.Authenticate(controller.AddFilm, 0)).Methods("POST")
+	router.HandleFunc("/edit-film/{film_id}", controller.Authenticate(controller.EditFilm, 0)).Methods("PUT")
 
 	http.Handle("/", router)
 	fmt.Println("Connected to port 1234")
