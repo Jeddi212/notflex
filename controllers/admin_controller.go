@@ -112,7 +112,7 @@ func GetFilmById(w http.ResponseWriter, r *http.Request) {
 	var response model.FilmResponse
 	if len(films) > 0 {
 		response.Status = 200
-		response.Message = "Success"
+		response.Message = "Success Get Film By ID"
 		response.Data = films
 	} else {
 		response.Status = 204
@@ -135,7 +135,7 @@ func GetFilmByTitle(w http.ResponseWriter, r *http.Request) {
 	var response model.FilmResponse
 	if len(films) > 0 {
 		response.Status = 200
-		response.Message = "Success"
+		response.Message = "Success Get Film By Title"
 		response.Data = films
 	} else {
 		response.Status = 204
