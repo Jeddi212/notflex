@@ -27,7 +27,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	if errors.Is(err, gorm.ErrRecordNotFound) == false {
 		//// Activate association mode
-		//db.Model(&user).Association("Credit")
+		//db.Where("user_id = ?", email)
 		//
 		//// Get data from many relations
 		//db.Model(&user).Association("Credit").Find(&user.Credit)
