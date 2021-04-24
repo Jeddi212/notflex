@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	controller "github.com/notflex/controllers"
+
 	model "github.com/notflex/models"
 
 	"github.com/gorilla/mux"
@@ -27,6 +28,7 @@ func main() {
 	router.HandleFunc("/updateProfile", controller.Authenticate(controller.UpdateMember, 1)).Methods("PUT")
 	router.HandleFunc("/subscribe", controller.Authenticate(controller.Subscribe, 1)).Methods("PUT")
 	router.HandleFunc("/unsubscribe", controller.Authenticate(controller.Unsubscribe, 1)).Methods("PUT")
+	router.HandleFunc("/search-histories", controller.Authenticate(controller.GetAllHistories, 1)).Methods("GET")
 
 	// Film Related Request
 

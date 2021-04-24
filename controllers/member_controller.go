@@ -132,3 +132,26 @@ func Unsubscribe(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
+
+func GetAllHistories(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	// Get email from logged member
+	email := GetEmailFromToken(r)
+	var result []models.Result
+
+	db.Debug().Model(&models.History{}).Select("films.id, films.title, films.genre, films.year, films.director, films.actor, films.synopsis, histories.date").Joins("join films on films.id = histories.film_id").Joins("join users on histories.user_email = users.email").Where("histories.user_email = ?", email).Scan(&result)
+
+	var response models.HistoryResponse
+	if len(result) > 0 {
+		response.Status = 200
+		response.Message = "Success Get All Histories"
+		response.History = result
+	} else {
+		response.Status = 204
+		response.Message = "Get histories failed, data empty"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
