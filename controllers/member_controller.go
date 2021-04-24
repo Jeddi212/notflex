@@ -15,18 +15,22 @@ func UpdateMember(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	name := r.Form.Get("name")
-	birthDate := r.Form.Get("birthdate")
-	gender := r.Form.Get("gender")
-
-	email := r.Form.Get("email")
+	// vars := mux.Vars(r)
+	// email := vars["email"]
+	email := GetEmailFromToken(r)
 
 	var user models.User
 	db.Where("email=?", email).First(&user)
 
-	user.Name = name
-	user.BirthDate = birthDate
-	user.Gender = gender
+	if name := r.Form.Get("name"); name != "" {
+		user.Name = name
+	}
+	if birthdate := r.Form.Get("birthdate"); birthdate != "" {
+		user.BirthDate = birthdate
+	}
+	if gender := r.Form.Get("gender"); gender != "" {
+		user.Gender = gender
+	}
 
 	result := db.Save(&user)
 
