@@ -20,6 +20,6 @@ func main() {
 	router.HandleFunc("/logout", controller.Logout).Methods("GET")
 	router.HandleFunc("/registration", controller.InsertMember).Methods("POST")
 	http.Handle("/", router)
-	fmt.Println("Connected to port 8080")
-	log.Fatal(http.ListenAndServe(":8080", router))
+	fmt.Println("Connected to port 1234")
+	log.Fatal(http.ListenAndServe(":1234", router))
 }
