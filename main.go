@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	controller "notflex/controllers"
-	model "notflex/models"
+	controller "github.com/notflex/controllers"
+	model "github.com/notflex/models"
 
 	"github.com/gorilla/mux"
 )
@@ -28,6 +28,8 @@ func main() {
 
 	// Film Related Request
 	router.HandleFunc("/search-film", controller.SearchFilm).Methods("GET")
+	router.HandleFunc("/search-film-by-id/{id_film}", controller.GetFilmById).Methods("GET")
+	router.HandleFunc("/search-film-by-title/{title_film}", controller.GetFilmByTitle).Methods("GET")
 	router.HandleFunc("/add-film", controller.AddFilm).Methods("POST")
 	router.HandleFunc("/edit-film/{film_id}", controller.EditFilm).Methods("PUT")
 

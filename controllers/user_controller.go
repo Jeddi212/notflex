@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"notflex/models"
+	"github.com/notflex/models"
 
 	"gorm.io/gorm"
 )
