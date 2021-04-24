@@ -41,7 +41,6 @@ func AddFilm(w http.ResponseWriter, r *http.Request) {
 	var response model.FilmResponse
 	if result.Error == nil {
 		// Output to console
-		//printUser(film)
 		fmt.Println("Success Insert Film to Database")
 		fmt.Println()
 
@@ -109,7 +108,6 @@ func EditFilm(w http.ResponseWriter, r *http.Request) {
 		result := db.Save(&film)
 		if result.Error == nil {
 			// Output to console
-			//printUser(film)
 			fmt.Println("Success Edit Film Data")
 			fmt.Println()
 
@@ -184,7 +182,6 @@ func SearchFilm(w http.ResponseWriter, r *http.Request) {
 	if result == nil {
 		if len(films) > 0 {
 			// Output to console
-			//printUser(film)
 			fmt.Println("Success search film")
 			fmt.Println()
 
