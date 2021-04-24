@@ -13,8 +13,8 @@ type User struct {
 	Subscribe   string    `form:"subscribe" json:"subscribe"`
 	SubDate     time.Time `form:"subDate" json:"subDate"`
 	Level       int       `form:"level" json:"level"`
-	CreditID    string    `form:"credit_id" json:"credit_id" gorm:"index"`
-	Credit      Credit
+	//CreditID    string    `form:"credit_id" json:"credit_id"`
+	//Credit      Credit
 }
 
 type UserResponse struct {
