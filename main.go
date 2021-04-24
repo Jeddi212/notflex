@@ -5,9 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	controller "github.com/notflex/controllers"
 	model "github.com/notflex/models"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -26,9 +27,13 @@ func main() {
 	router.HandleFunc("/updateProfile", controller.Authenticate(controller.UpdateMember, 1)).Methods("PUT")
 
 	// Film Related Request
+
+	router.HandleFunc("/search-film-by-id/{id_film}", controller.GetFilmById).Methods("GET")
+	router.HandleFunc("/search-film-by-title/{title_film}", controller.GetFilmByTitle).Methods("GET")
 	router.HandleFunc("/search-film", controller.Authenticate(controller.SearchFilm, 1)).Methods("GET")
 	router.HandleFunc("/add-film", controller.Authenticate(controller.AddFilm, 0)).Methods("POST")
 	router.HandleFunc("/edit-film/{film_id}", controller.Authenticate(controller.EditFilm, 0)).Methods("PUT")
+
 
 	http.Handle("/", router)
 	fmt.Println("Connected to port 1234")
