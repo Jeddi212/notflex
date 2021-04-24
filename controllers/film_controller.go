@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
+	"strconv"
+	"time"
 	model "github.com/notflex/models"
-
 	"github.com/gorilla/mux"
+
 )
 
 func AddFilm(w http.ResponseWriter, r *http.Request) {
@@ -192,7 +193,8 @@ func SearchFilm(w http.ResponseWriter, r *http.Request) {
 			response.Data = films
 		} else {
 			// Output to console
-			fmt.Println("Film not found\n")
+			fmt.Println("Film not found")
+			fmt.Println()
 
 			response.Status = 400
 			response.Message = "Film not found"
@@ -204,6 +206,68 @@ func SearchFilm(w http.ResponseWriter, r *http.Request) {
 
 		response.Status = 400
 		response.Message = "Search Film Failed " + result.Error()
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func WatchFilm(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	filmID, _ := strconv.Atoi(r.URL.Query()["film_id"][0])
+
+	var film model.Film
+
+	// Get email from logged member
+	email := GetEmailFromToken(r)
+
+	// Get user logged
+	var user model.User
+	db.Where("email = ?", email).First(&user)
+
+	// Check expire date
+	expDate := user.SubDate.AddDate(0, 0, 30)
+
+	// Set response
+	var response model.WatchResponse
+	if expDate.After(time.Now()) {
+		// Get film data
+		err := db.First(&film, filmID).Error
+
+		if err == nil {
+			// Insert into user_histories
+			var history model.History
+
+			result := db.Raw("INSERT INTO histories (user_email, film_id, date) VALUES (?, ?, ?)", email, filmID, interface{}(time.Now())).Scan(&history)
+
+			if result.Error == nil {
+				// Output to console
+				fmt.Println("Enjoy the movie")
+				fmt.Println()
+
+				response.Status = 200
+				response.Message = "Enjoy the movie"
+				response.Movie = film
+				response.Date = time.Now()
+			} else {
+				// Output to console
+				fmt.Println("Failed add to history\n" + result.Error.Error())
+
+				response.Status = 400
+				response.Message = "Failed add to history | " + result.Error.Error()
+			}
+		} else {
+			// Output to console
+			fmt.Println("Film not found\n" + err.Error())
+			fmt.Println()
+
+			response.Status = 400
+			response.Message = "Film not found " + err.Error()
+		}
+	} else {
+		response.Status = 400
+		response.Message = "Subscribe was expired"
 	}
 
 	w.Header().Set("Content-Type", "application/json")

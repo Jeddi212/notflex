@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/notflex/models"
-	model "github.com/notflex/models"
 )
 
 func UpdateMember(w http.ResponseWriter, r *http.Request) {
@@ -62,11 +61,6 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 
 	// Get current time
 	now := time.Now()
-	after := now.AddDate(0, 0, 30)
-
-	fmt.Print("\nCurrent Time  :", now)
-	fmt.Print("\nExpire  Time  :", after)
-	fmt.Println()
 
 	// Get subscribe type from request
 	subscribe := r.Form.Get("subscribe")
@@ -78,7 +72,7 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 	var response models.SubscribeResponse
 	if subscribe == "Premium" || subscribe == "Basic" {
 		// Update subscribe
-		result := db.Model(&model.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": subscribe, "sub_date": after})
+		result := db.Model(&models.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": subscribe, "sub_date": now})
 
 		var creditCard models.Credit
 		creditCard.CardNumber = cardNumber
