@@ -9,3 +9,9 @@ type Film struct {
 	Actor    string `form:"actor" json:"actor"`
 	Synopsis string `form:"synopsis" json:"synopsis"`
 }
+
+type FilmResponse struct {
+	Status  int    `form:"status" json:"status"`
+	Message string `form:"message" json:"message"`
+	Data    []Film `form:"data" json:"data"`
+}
