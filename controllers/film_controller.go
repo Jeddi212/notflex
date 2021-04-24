@@ -3,12 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
+	model "github.com/notflex/models"
 	"net/http"
 	"strconv"
 	"time"
-	model "github.com/notflex/models"
-	"github.com/gorilla/mux"
-
 )
 
 func AddFilm(w http.ResponseWriter, r *http.Request) {
@@ -263,7 +262,7 @@ func WatchFilm(w http.ResponseWriter, r *http.Request) {
 			fmt.Println()
 
 			response.Status = 400
-			response.Message = "Film not found " + err.Error()
+			response.Message = "Film not found | " + err.Error()
 		}
 	} else {
 		response.Status = 400

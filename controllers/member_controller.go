@@ -112,7 +112,7 @@ func Unsubscribe(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	if err := db.Where("email = ?", email).First(&user).Error; err == nil {
 		if user.Subscribe == "Basic" || user.Subscribe == "Premium" {
-			result := db.Model(&model.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": "", "sub_date": nil})
+			result := db.Model(&models.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": "", "sub_date": nil})
 
 			if result.Error == nil {
 				response.Status = 200
