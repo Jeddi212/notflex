@@ -120,7 +120,7 @@ func Unsubscribe(w http.ResponseWriter, r *http.Request) {
 
 	email := GetEmailFromToken(r)
 	//date := time.Now().AddDate(-1, 0, 0)
-	result := db.Model(&model.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": "unsub", "sub_date": nil})
+	result := db.Model(&model.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": "", "sub_date": nil})
 
 	var response models.UnsubscribeResponse
 	if result.Error == nil {
