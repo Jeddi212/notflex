@@ -13,12 +13,11 @@ type User struct {
 	Subscribe   string    `form:"subscribe" json:"subscribe"`
 	SubDate     time.Time `form:"subDate" json:"subDate"`
 	Level       int       `form:"level" json:"level"`
-	//CreditID    string    `form:"credit_id" json:"credit_id"`
-	//Credit      Credit
 }
 
 type UserResponse struct {
-	Status  int    `form:"status" json:"status"`
-	Message string `form:"message" json:"message"`
-	Data    []User `form:"data" json:"data"`
+	Status  int            `form:"status" json:"status"`
+	Message string         `form:"message" json:"message"`
+	Data    []User         `form:"data" json:"data"`
+	Credit  CreditResponse `form:"credit" json:"credit"`
 }

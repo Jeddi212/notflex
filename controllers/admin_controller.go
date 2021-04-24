@@ -28,12 +28,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		checkNil = true
 	}
 
+	var creditCard model.Credit
+	var creditResponse model.CreditResponse
 	if errors.Is(err, gorm.ErrRecordNotFound) == false {
-		//// Activate association mode
-		//db.Where("user_id = ?", email)
-		//
-		//// Get data from many relations
-		//db.Model(&user).Association("Credit").Find(&user.Credit)
+		// Activate association mode
+		db.Where("user_id = ?", user.Email).Find(&creditCard)
+
+		// Set Credit Response
+		creditResponse.CardNumber = creditCard.CardNumber
+		creditResponse.Exp = creditCard.Exp
+		creditResponse.Cvc = creditCard.Cvc
 
 		// Add user to user list
 		users = append(users, user)
@@ -43,12 +47,12 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	var response model.UserResponse
 	if len(users) > 0 && !checkNil {
 		// Output to console
-		//printUsers(users)
 		fmt.Println("Success get user data", email)
 
 		response.Status = 200
 		response.Message = "Success Get User Data"
 		response.Data = users
+		response.Credit = creditResponse
 	} else {
 		// Output to console
 		fmt.Println("Get Data Failed")
@@ -80,7 +84,6 @@ func SuspendUser(w http.ResponseWriter, r *http.Request) {
 	var response model.UserResponse
 	if result.Error == nil {
 		// Output to console
-		//printUser(user)
 		fmt.Println("Suspend User Success", email)
 
 		response.Status = 200

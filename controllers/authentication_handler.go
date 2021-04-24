@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -65,8 +64,7 @@ func Authenticate(next http.HandlerFunc, accessType int) http.HandlerFunc {
 }
 
 func validateUserToken(w http.ResponseWriter, r *http.Request, accessType int) bool {
-	isAccessTokenValid, email, userType := validateTokenFromCookies(r)
-	fmt.Print(email, userType, accessType, isAccessTokenValid)
+	isAccessTokenValid, _, userType := validateTokenFromCookies(r)
 
 	if isAccessTokenValid {
 		isUserValid := userType == accessType
@@ -89,4 +87,18 @@ func validateTokenFromCookies(r *http.Request) (bool, string, int) {
 		}
 	}
 	return false, "", -1
+}
+
+func GetEmailFromToken(r *http.Request) string {
+	if cookie, err := r.Cookie(tokenName); err == nil {
+		accessToken := cookie.Value
+		accessClaims := &Claims{}
+		parsedToken, err := jwt.ParseWithClaims(accessToken, accessClaims, func(accessToken *jwt.Token) (interface{}, error) {
+			return jwtKey, nil
+		})
+		if err == nil && parsedToken.Valid {
+			return accessClaims.Email
+		}
+	}
+	return ""
 }
