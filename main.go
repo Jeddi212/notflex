@@ -25,11 +25,12 @@ func main() {
 	router.HandleFunc("/get-user", controller.Authenticate(controller.GetUser, 0)).Methods("GET")
 	router.HandleFunc("/suspend", controller.Authenticate(controller.SuspendUser, 0)).Methods("PUT")
 	router.HandleFunc("/updateProfile", controller.Authenticate(controller.UpdateMember, 1)).Methods("PUT")
+	router.HandleFunc("/subscribe", controller.Authenticate(controller.Subscribe, 1)).Methods("PUT")
 
 	// Film Related Request
 
-	router.HandleFunc("/search-film-by-id/{id_film}", controller.GetFilmById).Methods("GET")
-	router.HandleFunc("/search-film-by-title/{title_film}", controller.GetFilmByTitle).Methods("GET")
+	router.HandleFunc("/search-film-by-id/{id_film}", controller.Authenticate(controller.GetFilmById, 0)).Methods("GET")
+	router.HandleFunc("/search-film-by-title/{title_film}", controller.Authenticate(controller.GetFilmByTitle, 0)).Methods("GET")
 	router.HandleFunc("/search-film", controller.Authenticate(controller.SearchFilm, 1)).Methods("GET")
 	router.HandleFunc("/add-film", controller.Authenticate(controller.AddFilm, 0)).Methods("POST")
 	router.HandleFunc("/edit-film/{film_id}", controller.Authenticate(controller.EditFilm, 0)).Methods("PUT")

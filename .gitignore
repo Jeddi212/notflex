@@ -16,3 +16,7 @@
 
 # IntelliJ
 .idea/
+
+# Mod init
+.mod
+.sum
