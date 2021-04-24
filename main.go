@@ -26,6 +26,7 @@ func main() {
 	router.HandleFunc("/suspend", controller.Authenticate(controller.SuspendUser, 0)).Methods("PUT")
 	router.HandleFunc("/updateProfile", controller.Authenticate(controller.UpdateMember, 1)).Methods("PUT")
 	router.HandleFunc("/subscribe", controller.Authenticate(controller.Subscribe, 1)).Methods("PUT")
+	router.HandleFunc("/unsubscribe", controller.Authenticate(controller.Unsubscribe, 1)).Methods("PUT")
 
 	// Film Related Request
 
