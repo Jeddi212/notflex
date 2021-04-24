@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"notflex/models"
+	"github.com/notflex/models"
 )
 
 func UpdateMember(w http.ResponseWriter, r *http.Request) {

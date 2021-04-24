@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	model "notflex/models"
+
+	model "github.com/notflex/models"
 
 	"github.com/gorilla/mux"
 )
