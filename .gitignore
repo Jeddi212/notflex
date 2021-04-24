@@ -18,5 +18,5 @@
 .idea/
 
 # Mod init
-.mod
-.sum
+*.mod
+*.sum
