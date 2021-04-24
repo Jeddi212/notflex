@@ -6,8 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gormExplore/model"
-
 	"github.com/notflex/models"
 	model "github.com/notflex/models"
 )
