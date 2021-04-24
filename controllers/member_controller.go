@@ -3,11 +3,11 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gormExplore/model"
 	"net/http"
 	"time"
 
 	"github.com/notflex/models"
+	model "github.com/notflex/models"
 )
 
 func UpdateMember(w http.ResponseWriter, r *http.Request) {
@@ -104,6 +104,31 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 	} else {
 		response.Status = 400
 		response.Message = "Subscribe Failed | Invalid Subscribe Type (Basic | Premium)"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func Unsubscribe(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	err := r.ParseForm()
+	if err != nil {
+		return
+	}
+
+	email := GetEmailFromToken(r)
+	//date := time.Now().AddDate(-1, 0, 0)
+	result := db.Model(&model.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": "", "sub_date": nil})
+
+	var response models.UnsubscribeResponse
+	if result.Error == nil {
+		response.Status = 200
+		response.Message = "We are so sad you unsubscribed :("
+	} else {
+		response.Status = 400
+		response.Message = "Unsubscribe Failed!" + result.Error.Error()
 	}
 
 	w.Header().Set("Content-Type", "application/json")
