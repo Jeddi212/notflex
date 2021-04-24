@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -97,6 +98,36 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 	} else {
 		response.Status = 400
 		response.Message = "Subscribe Failed | Invalid Subscribe Type (Basic | Premium)"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func Unsubscribe(w http.ResponseWriter, r *http.Request) {
+	db := Connect()
+
+	email := GetEmailFromToken(r)
+	var response models.UnsubscribeResponse
+	var user models.User
+	if err := db.Where("email = ?", email).First(&user).Error; err == nil {
+		if user.Subscribe == "Basic" || user.Subscribe == "Premium" {
+			result := db.Model(&model.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": "", "sub_date": nil})
+
+			if result.Error == nil {
+				response.Status = 200
+				response.Message = "We are so sad you unsubscribed :("
+			} else {
+				response.Status = 400
+				response.Message = "Unsubscribe Failed!" + result.Error.Error()
+			}
+		} else {
+			response.Status = 400
+			response.Message = "You Haven't Subscribe or Have Unsubscribe before"
+		}
+	} else {
+		response.Status = 400
+		response.Message = "There is Something Wrong"
 	}
 
 	w.Header().Set("Content-Type", "application/json")

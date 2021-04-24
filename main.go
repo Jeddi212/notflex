@@ -5,9 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	controller "github.com/notflex/controllers"
 	model "github.com/notflex/models"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -25,8 +26,12 @@ func main() {
 	router.HandleFunc("/suspend", controller.Authenticate(controller.SuspendUser, 0)).Methods("PUT")
 	router.HandleFunc("/updateProfile", controller.Authenticate(controller.UpdateMember, 1)).Methods("PUT")
 	router.HandleFunc("/subscribe", controller.Authenticate(controller.Subscribe, 1)).Methods("PUT")
+	router.HandleFunc("/unsubscribe", controller.Authenticate(controller.Unsubscribe, 1)).Methods("PUT")
 
 	// Film Related Request
+
+	router.HandleFunc("/search-film-by-id/{id_film}", controller.Authenticate(controller.GetFilmById, 0)).Methods("GET")
+	router.HandleFunc("/search-film-by-title/{title_film}", controller.Authenticate(controller.GetFilmByTitle, 0)).Methods("GET")
 	router.HandleFunc("/search-film", controller.Authenticate(controller.SearchFilm, 1)).Methods("GET")
 	router.HandleFunc("/add-film", controller.Authenticate(controller.AddFilm, 0)).Methods("POST")
 	router.HandleFunc("/edit-film/{film_id}", controller.Authenticate(controller.EditFilm, 0)).Methods("PUT")

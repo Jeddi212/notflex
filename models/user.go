@@ -27,3 +27,8 @@ type SubscribeResponse struct {
 	Message string `form:"message" json:"message"`
 	Type    string `form:"type" json:"type"`
 }
+
+type UnsubscribeResponse struct {
+	Status  int    `form:"status" json:"status"`
+	Message string `form:"message" json:"message"`
+}
