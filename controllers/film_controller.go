@@ -3,9 +3,10 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	model "github.com/notflex/models"
 	"net/http"
+	model "notflex/models"
+
+	"github.com/gorilla/mux"
 )
 
 func AddFilm(w http.ResponseWriter, r *http.Request) {

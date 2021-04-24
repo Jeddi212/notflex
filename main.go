@@ -5,9 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	controller "notflex/controllers"
+	model "notflex/models"
+
 	"github.com/gorilla/mux"
-	controller "github.com/notflex/controllers"
-	model "github.com/notflex/models"
 )
 
 func main() {

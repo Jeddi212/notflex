@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	model "github.com/notflex/models"
-	"gorm.io/gorm"
 	"net/http"
+	model "notflex/models"
+
+	"gorm.io/gorm"
 )
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
