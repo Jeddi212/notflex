@@ -21,3 +21,9 @@ type UserResponse struct {
 	Data    []User         `form:"data" json:"data"`
 	Credit  CreditResponse `form:"credit" json:"credit"`
 }
+
+type SubscribeResponse struct {
+	Status  int    `form:"status" json:"status"`
+	Message string `form:"message" json:"message"`
+	Type    string `form:"type" json:"type"`
+}
