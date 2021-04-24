@@ -12,7 +12,7 @@ import (
 
 func main() {
 	db := controller.Connect()
-	db.AutoMigrate(&model.User{}, &model.Film{}, &model.Credit{})
+	db.AutoMigrate(&model.User{}, &model.Film{}, &model.Credit{}, &model.History{})
 	// member level 1
 	// admin level 0
 	router := mux.NewRouter()
@@ -30,6 +30,7 @@ func main() {
 	router.HandleFunc("/search-film", controller.Authenticate(controller.SearchFilm, 1)).Methods("GET")
 	router.HandleFunc("/add-film", controller.Authenticate(controller.AddFilm, 0)).Methods("POST")
 	router.HandleFunc("/edit-film/{film_id}", controller.Authenticate(controller.EditFilm, 0)).Methods("PUT")
+	router.HandleFunc("/watch-film", controller.Authenticate(controller.WatchFilm, 1)).Methods("GET")
 
 	http.Handle("/", router)
 	fmt.Println("Connected to port 1234")

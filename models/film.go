@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type Film struct {
 	ID       int    `form:"id" json:"id" gorm:"primaryKey"`
 	Title    string `form:"title" json:"title"`
@@ -14,4 +16,11 @@ type FilmResponse struct {
 	Status  int    `form:"status" json:"status"`
 	Message string `form:"message" json:"message"`
 	Data    []Film `form:"data" json:"data"`
+}
+
+type WatchResponse struct {
+	Status  int       `form:"status" json:"status"`
+	Message string    `form:"message" json:"message"`
+	Movie   Film      `form:"film" json:"film"`
+	Date    time.Time `form:"date" json:"date"`
 }
