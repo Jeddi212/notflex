@@ -31,7 +31,6 @@ func main() {
 	router.HandleFunc("/search-histories", controller.Authenticate(controller.GetAllHistories, 1)).Methods("GET")
 
 	// Film Related Request
-
 	router.HandleFunc("/search-film-by-id/{id_film}", controller.Authenticate(controller.GetFilmById, 0)).Methods("GET")
 	router.HandleFunc("/search-film-by-title/{title_film}", controller.Authenticate(controller.GetFilmByTitle, 0)).Methods("GET")
 	router.HandleFunc("/search-film", controller.Authenticate(controller.SearchFilm, 1)).Methods("GET")

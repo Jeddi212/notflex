@@ -69,34 +69,39 @@ func Subscribe(w http.ResponseWriter, r *http.Request) {
 
 	// Set response
 	var response models.SubscribeResponse
-	if subscribe == "Premium" || subscribe == "Basic" {
-		// Update subscribe
-		result := db.Model(&models.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": subscribe, "sub_date": now})
+	if cardNumber == "" || exp == "" || cvc == "" {
+		response.Status = 400
+		response.Message = "Subscribe Failed | Form Data Invalid"
+	} else {
+		if subscribe == "Premium" || subscribe == "Basic" {
+			// Update subscribe
+			result := db.Model(&models.User{}).Where("email = ?", email).Updates(map[string]interface{}{"subscribe": subscribe, "sub_date": now})
 
-		var creditCard models.Credit
-		creditCard.CardNumber = cardNumber
-		creditCard.Exp = exp
-		creditCard.Cvc = cvc
-		creditCard.UserID = email
+			var creditCard models.Credit
+			creditCard.CardNumber = cardNumber
+			creditCard.Exp = exp
+			creditCard.Cvc = cvc
+			creditCard.UserID = email
 
-		if result.Error == nil {
-			// Add new credit card
-			err := db.Save(&creditCard)
-			if err.Error == nil {
-				response.Status = 200
-				response.Message = "Subscribe success"
-				response.Type = subscribe
+			if result.Error == nil {
+				// Add new credit card
+				err := db.Save(&creditCard)
+				if err.Error == nil {
+					response.Status = 200
+					response.Message = "Subscribe success"
+					response.Type = subscribe
+				} else {
+					response.Status = 400
+					response.Message = "Subscribe Failed | " + result.Error.Error()
+				}
 			} else {
 				response.Status = 400
 				response.Message = "Subscribe Failed | " + result.Error.Error()
 			}
 		} else {
 			response.Status = 400
-			response.Message = "Subscribe Failed | " + result.Error.Error()
+			response.Message = "Subscribe Failed | Invalid Subscribe Type (Basic | Premium)"
 		}
-	} else {
-		response.Status = 400
-		response.Message = "Subscribe Failed | Invalid Subscribe Type (Basic | Premium)"
 	}
 
 	w.Header().Set("Content-Type", "application/json")
