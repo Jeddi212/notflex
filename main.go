@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	controller "github.com/notflex/controllers"
+	controller "notflex/controllers"
 
-	model "github.com/notflex/models"
+	model "notflex/models"
 
 	"github.com/gorilla/mux"
 )

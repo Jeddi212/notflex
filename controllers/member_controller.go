@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/notflex/models"
+	"notflex/models"
 )
 
 func UpdateMember(w http.ResponseWriter, r *http.Request) {

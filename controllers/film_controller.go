@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	model "github.com/notflex/models"
+	model "notflex/models"
 
 	"github.com/gorilla/mux"
 )

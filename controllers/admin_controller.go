@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	model "github.com/notflex/models"
+	model "notflex/models"
 
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
