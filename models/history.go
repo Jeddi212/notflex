@@ -3,9 +3,11 @@ package models
 import "time"
 
 type History struct {
-	ID        int       `form:"id" json:"id" gorm:"primaryKey"`
-	UserEmail string    `form:"userEmail" json:"userEmail"`
-	FilmId    int       `form:"filmId" json:"filmId"`
+	ID        int    `form:"id" json:"id" gorm:"primaryKey"`
+	UserEmail string `form:"userEmail" json:"userEmail" gorm:"index"`
+	User      User
+	FilmId    int `form:"filmId" json:"filmId" gorm:"index"`
+	Film      Film
 	Date      time.Time `form:"date" json:"date"`
 }
 
