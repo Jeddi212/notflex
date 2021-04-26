@@ -36,7 +36,7 @@ func CheckUserLogin(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var response models.BasicResponse
 		response.Status = 406
-		response.Message = "Already logged in as " + email[0]
+		response.Message = "Already logged in as " + cekEmail
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(response)
 	}
