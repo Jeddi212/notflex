@@ -16,60 +16,69 @@ func CheckUserLogin(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query()["email"]
 	password := r.URL.Query()["password"]
 	var user models.User
+	cekEmail := GetEmailFromToken(r)
 
-	if err := db.Where("email = ? AND password = ?", email[0], password[0]).First(&user).Error; err == nil {
-		if user.Status == "active" {
-			if user.Level == 1 {
-				generateToken(w, user.Email, 1)
-			} else if user.Level == 0 {
-				generateToken(w, user.Email, 0)
+	if cekEmail == "" {
+		if err := db.Where("email = ? AND password = ?", email[0], password[0]).First(&user).Error; err == nil {
+			if user.Status == "active" {
+				if user.Level == 1 {
+					generateToken(w, user.Email, 1)
+				} else if user.Level == 0 {
+					generateToken(w, user.Email, 0)
+				}
+				sendSuccessResponse(w)
+			} else if user.Status == "suspend" {
+				sendSuspendResponse(w)
 			}
-			sendSuccessResponse(w)
-		} else if user.Status == "suspend" {
-			sendSuspendResponse(w)
+		} else {
+			sendErrorResponse(w)
 		}
 	} else {
-		sendErrorResponse(w)
+		var response models.BasicResponse
+		response.Status = 406
+		response.Message = "Already logged in as " + cekEmail
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
 	}
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	resetUserToken(w)
 
-	var response models.UserResponse
+	var response models.BasicResponse
 	response.Status = 200
-	response.Message = "Success"
+	response.Message = "Success Logout |  Bye - Bye"
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
 func sendSuccessResponse(w http.ResponseWriter) {
-	var response models.ErrorResponse
+	var response models.BasicResponse
 	response.Status = 200
-	response.Message = "Success"
+	response.Message = "Success Login"
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
 func sendErrorResponse(w http.ResponseWriter) {
-	var response models.ErrorResponse
+	var response models.BasicResponse
 	response.Status = 400
-	response.Message = "Failed"
+	response.Message = "Failed Login"
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
 func sendSuspendResponse(w http.ResponseWriter) {
-	var response models.ErrorResponse
+	var response models.BasicResponse
 	response.Status = 400
-	response.Message = "Suspended"
+	response.Message = "Account Suspended"
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
 }
 
 func sendUnauthorizedResponse(w http.ResponseWriter) {
-	var response models.ErrorResponse
+	var response models.BasicResponse
 	response.Status = 401
 	response.Message = "Unauthorized Access"
 	w.Header().Set("Content-Type", "application/json")
