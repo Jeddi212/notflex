@@ -18,7 +18,7 @@ type Claims struct {
 }
 
 func generateToken(w http.ResponseWriter, email string, userType int) {
-	tokenExpiryTime := time.Now().Add(5 * time.Minute)
+	tokenExpiryTime := time.Now().Add(20 * time.Minute)
 
 	claims := &Claims{
 		Email:    email,
