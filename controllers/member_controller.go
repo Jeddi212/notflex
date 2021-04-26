@@ -34,7 +34,7 @@ func UpdateMember(w http.ResponseWriter, r *http.Request) {
 
 	result := db.Save(&user)
 
-	var response models.UserResponse
+	var response models.BasicResponse
 	if result.Error == nil {
 		response.Status = 200
 		response.Message = "Success Update User Data"
