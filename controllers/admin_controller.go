@@ -81,7 +81,7 @@ func SuspendUser(w http.ResponseWriter, r *http.Request) {
 	result := db.Model(&model.User{}).Where("email = ?", email).Update("status", "suspend")
 
 	// Set response
-	var response model.UserResponse
+	var response model.BasicResponse
 	if result.Error == nil {
 		// Output to console
 		fmt.Println("Suspend User Success", email)
