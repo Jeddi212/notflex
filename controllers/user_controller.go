@@ -16,27 +16,36 @@ func CheckUserLogin(w http.ResponseWriter, r *http.Request) {
 	email := r.URL.Query()["email"]
 	password := r.URL.Query()["password"]
 	var user models.User
+	cekEmail := GetEmailFromToken(r)
 
-	if err := db.Where("email = ? AND password = ?", email[0], password[0]).First(&user).Error; err == nil {
-		if user.Status == "active" {
-			if user.Level == 1 {
-				generateToken(w, user.Email, 1)
-			} else if user.Level == 0 {
-				generateToken(w, user.Email, 0)
+	if cekEmail == "" {
+		if err := db.Where("email = ? AND password = ?", email[0], password[0]).First(&user).Error; err == nil {
+			if user.Status == "active" {
+				if user.Level == 1 {
+					generateToken(w, user.Email, 1)
+				} else if user.Level == 0 {
+					generateToken(w, user.Email, 0)
+				}
+				sendSuccessResponse(w)
+			} else if user.Status == "suspend" {
+				sendSuspendResponse(w)
 			}
-			sendSuccessResponse(w)
-		} else if user.Status == "suspend" {
-			sendSuspendResponse(w)
+		} else {
+			sendErrorResponse(w)
 		}
 	} else {
-		sendErrorResponse(w)
+		var response models.ErrorResponse
+		response.Status = 406
+		response.Message = "Already logged in as " + email[0]
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
 	}
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	resetUserToken(w)
 
-	var response models.UserResponse
+	var response models.ErrorResponse
 	response.Status = 200
 	response.Message = "Success"
 
@@ -62,7 +71,7 @@ func sendErrorResponse(w http.ResponseWriter) {
 
 func sendSuspendResponse(w http.ResponseWriter) {
 	var response models.ErrorResponse
-	response.Status = 400
+	response.Status = 403
 	response.Message = "Suspended"
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
