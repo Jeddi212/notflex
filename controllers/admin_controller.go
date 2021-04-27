@@ -130,7 +130,7 @@ func GetFilmByTitle(w http.ResponseWriter, r *http.Request) {
 	titleFilm := vars["title_film"]
 
 	var films []model.Film
-	db.Where("title = ?", titleFilm).First(&films)
+	db.Where("title = ?", titleFilm).Find(&films)
 
 	var response model.FilmResponse
 	if len(films) > 0 {

@@ -145,7 +145,12 @@ func GetAllHistories(w http.ResponseWriter, r *http.Request) {
 	email := GetEmailFromToken(r)
 	var result []models.Result
 
-	db.Model(&models.History{}).Select("films.id, films.title, films.genre, films.year, films.director, films.actor, films.synopsis, histories.date").Joins("join films on films.id = histories.film_id").Joins("join users on histories.user_email = users.email").Where("histories.user_email = ?", email).Scan(&result)
+	db.Model(&models.History{}).
+		Select("films.id, films.title, films.genre, films.year, films.director, films.actor, films.synopsis, histories.date").
+		Joins("join films on films.id = histories.film_id").
+		Joins("join users on histories.user_email = users.email").
+		Where("histories.user_email = ?", email).
+		Scan(&result)
 
 	var response models.HistoryResponse
 	if len(result) > 0 {
