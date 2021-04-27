@@ -12,7 +12,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// AddFilm | Admin Function - Add New Film Metadata to Database
 func AddFilm(w http.ResponseWriter, r *http.Request) {
+	// Connect to database
 	db := Connect()
 
 	err := r.ParseForm()
@@ -20,7 +22,7 @@ func AddFilm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get film data
+	// Get film data from form
 	title := r.Form.Get("title")
 	genre := r.Form.Get("genre")
 	year := r.Form.Get("year")
@@ -28,7 +30,7 @@ func AddFilm(w http.ResponseWriter, r *http.Request) {
 	actor := r.Form.Get("actor")
 	synopsis := r.Form.Get("synopsis")
 
-	// Set inputted data to object
+	// Set inputted data to object model
 	film := model.Film{
 		Title:    title,
 		Genre:    genre,
@@ -62,7 +64,9 @@ func AddFilm(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// EditFilm | Admin Function - Edit Specific Film from Database By FilmId
 func EditFilm(w http.ResponseWriter, r *http.Request) {
+	// Connect to database
 	db := Connect()
 
 	err := r.ParseForm()
@@ -70,15 +74,16 @@ func EditFilm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get id from path
+	// Get id from url
 	vars := mux.Vars(r)
 	filmID := vars["film_id"]
 
+	// Set object model to hold film data
 	var film model.Film
 	// Get film from database by id
 	err = db.First(&film, filmID).Error
 
-	// Get film data
+	// Get film data from form
 	title := r.Form.Get("title")
 	genre := r.Form.Get("genre")
 	year := r.Form.Get("year")
@@ -87,6 +92,7 @@ func EditFilm(w http.ResponseWriter, r *http.Request) {
 	synopsis := r.Form.Get("synopsis")
 
 	// Set inputted data to object
+	// Can use many combination to update
 	if title != "" {
 		film.Title = title
 	}
@@ -137,12 +143,15 @@ func EditFilm(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// SearchFilm | Member Function - Search Film(s) From Database - Can use many combination
 func SearchFilm(w http.ResponseWriter, r *http.Request) {
+	// Connect to database
 	db := Connect()
 
+	// Set object model to hold film data
 	var films []model.Film
 
-	// Get film data
+	// Get film data requested by member from query param
 	title := r.URL.Query()["title"]
 	genre := r.URL.Query()["genre"]
 	year := r.URL.Query()["year"]
@@ -178,7 +187,7 @@ func SearchFilm(w http.ResponseWriter, r *http.Request) {
 		query = query.Where("actor LIKE ?", actors)
 	}
 
-	// Finish the query
+	// Finish the query | Find film(s) from database
 	result := query.Find(&films).Error
 
 	// Set response
@@ -213,17 +222,21 @@ func SearchFilm(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// WatchFilm | Member Function - Add Watched Film to Member Histories
 func WatchFilm(w http.ResponseWriter, r *http.Request) {
+	// Connect to database
 	db := Connect()
 
+	// Get FilmId from query param
 	filmID, _ := strconv.Atoi(r.URL.Query()["film_id"][0])
 
+	// Set bject model to hold film data
 	var film model.Film
 
 	// Get email from logged member
 	email := GetEmailFromToken(r)
 
-	// Get user logged
+	// Get user data logged
 	var user model.User
 	db.Where("email = ?", email).First(&user)
 
@@ -232,6 +245,8 @@ func WatchFilm(w http.ResponseWriter, r *http.Request) {
 
 	// Set response
 	var response model.WatchResponse
+
+	// If the user subscription hasn't expired yet
 	if expDate.After(time.Now()) {
 		// Get film data
 		err := db.First(&film, filmID).Error
@@ -240,7 +255,13 @@ func WatchFilm(w http.ResponseWriter, r *http.Request) {
 			// Insert into user_histories
 			var history model.History
 
-			result := db.Raw("INSERT INTO histories (user_email, film_id, date) VALUES (?, ?, ?)", email, filmID, interface{}(time.Now())).Scan(&history)
+			// Add film metadata to member histories
+			result := db.
+				Raw("INSERT INTO histories (user_email, film_id, date) VALUES (?, ?, ?)",
+					email,
+					filmID,
+					interface{}(time.Now())).
+				Scan(&history)
 
 			if result.Error == nil {
 				// Output to console

@@ -1,0 +1,505 @@
+{
+	"info": {
+		"_postman_id": "402ca45f-b9e1-4cd0-91a0-6d29ed0a923c",
+		"name": "Notflex",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "admin@admin.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/login",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/logout",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/get-user?email=sunwell@gmail.com",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"get-user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "sunwell@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "sunwell@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "sunwell",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Sunwell",
+							"type": "text"
+						},
+						{
+							"key": "birthdate",
+							"value": "01/20/20",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "Male",
+							"type": "text"
+						},
+						{
+							"key": "nationality",
+							"value": "Indonesian",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/registration",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Suspend",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "jeddi@gmail.com",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/suspend",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"suspend"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscribe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "subscribe",
+							"value": "Premium",
+							"type": "text"
+						},
+						{
+							"key": "cardNumber",
+							"value": "9876543",
+							"type": "text"
+						},
+						{
+							"key": "exp",
+							"value": "08/30",
+							"type": "text"
+						},
+						{
+							"key": "cvc",
+							"value": "333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/subscribe",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"subscribe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unsubscribe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/unsubscribe",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"unsubscribe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Rafael Gaskeun Sih",
+							"type": "text"
+						},
+						{
+							"key": "birthdate",
+							"value": "01/12/21",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "male",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/update-profile",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"update-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Film",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "Algoritma Lanjut",
+							"type": "text"
+						},
+						{
+							"key": "genre",
+							"value": "Horror",
+							"type": "text"
+						},
+						{
+							"key": "year",
+							"value": "2023",
+							"type": "text"
+						},
+						{
+							"key": "director",
+							"value": "Hai",
+							"type": "text"
+						},
+						{
+							"key": "actor",
+							"value": "Bu Inge; Pa Hery",
+							"type": "text"
+						},
+						{
+							"key": "synopsis",
+							"value": "Mengkisahkan algoritma yang menyeramkan",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/add-film",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"add-film"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Film",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "Algoritma Lanjut",
+							"type": "text"
+						},
+						{
+							"key": "genre",
+							"value": "Fantasy; Historical",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "year",
+							"value": "2016",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "director",
+							"value": "Septian Wakwaw",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "actor",
+							"value": "Khaleed; Selena; Claude",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "synopsis",
+							"value": "Numpang lewat ke gurun sahara. Namun ada kejadian tak terduga, ia dihadang oleh bandit yang legendaris, Claude, amun Khaleed pantang menyerah.",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:1234/edit-film/8",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"edit-film",
+						"8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Film",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/search-film?genre=Comedy",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"search-film"
+					],
+					"query": [
+						{
+							"key": "genre",
+							"value": "Comedy"
+						},
+						{
+							"key": "year",
+							"value": "2006",
+							"disabled": true
+						},
+						{
+							"key": "director",
+							"value": "Lylia Mendar",
+							"disabled": true
+						},
+						{
+							"key": "actor",
+							"value": "Kenny G",
+							"disabled": true
+						},
+						{
+							"key": "synopsis",
+							"value": "Dikisahkan sebuah kerajaan pasir di jaman es yang sangat dingin. Hiduplah seorang pangeran bernama aladin. Ia sangat gagah perkasa. Namun kesombongan menjadikannya terkutuk dan harus dicampakkan dari kerjaannya. Bagaimana kisah Aladin bertahan hidup dan mengakhiri kutuk tersebut?",
+							"disabled": true
+						},
+						{
+							"key": "title",
+							"value": "Aladin Naik Haji 2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Film by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/search-film-by-id/7",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"search-film-by-id",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Seacrh Film by Title",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/search-film-by-title/Algoritma Lanjut",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"search-film-by-title",
+						"Algoritma Lanjut"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Watch Film",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/watch-film?film_id=6",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"watch-film"
+					],
+					"query": [
+						{
+							"key": "film_id",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Histories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:1234/search-histories",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"search-histories"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -13,14 +13,17 @@ import (
 )
 
 func main() {
+	// Connect To Database
 	db := controller.Connect()
+
+	// Do Migrate for automation table creations and updates
 	db.AutoMigrate(&model.User{}, &model.Film{}, &model.Credit{}, &model.History{})
-	// member level 1
-	// admin level 0
 	router := mux.NewRouter()
 
+	// Member Level : 1
+	// Admin  Level : 0
 	// User Related Request
-	router.HandleFunc("/login", controller.CheckUserLogin).Methods("GET")
+	router.HandleFunc("/login", controller.CheckUserLogin).Methods("POST")
 	router.HandleFunc("/logout", controller.Logout).Methods("GET")
 	router.HandleFunc("/registration", controller.InsertMember).Methods("POST")
 	router.HandleFunc("/get-user", controller.Authenticate(controller.GetUser, 0)).Methods("GET")
@@ -38,6 +41,7 @@ func main() {
 	router.HandleFunc("/edit-film/{film_id}", controller.Authenticate(controller.EditFilm, 0)).Methods("PUT")
 	router.HandleFunc("/watch-film", controller.Authenticate(controller.WatchFilm, 1)).Methods("GET")
 
+	// Set router
 	http.Handle("/", router)
 	fmt.Println("Connected to port 1234")
 	log.Fatal(http.ListenAndServe(":1234", router))
