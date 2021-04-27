@@ -100,7 +100,7 @@ func InsertMember(w http.ResponseWriter, r *http.Request) {
 	nationality := r.Form.Get("nationality")
 
 	var userCek models.User
-	var response models.UserResponse
+	var response models.BasicResponse
 	err = db.Where("email = ?", email).First(&userCek).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) == true {
 		user := models.User{
