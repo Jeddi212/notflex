@@ -17,7 +17,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Connect to database
 	db := Connect()
 
-	// Set objject model to hold user data
+	// Set object model to hold user data
 	var users []model.User
 	var user model.User
 
