@@ -136,7 +136,7 @@ func InsertMember(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the email has been taken
 	err = db.Where("email = ?", email).First(&userCek).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) == true {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		// Set user data to object
 		user := models.User{
 			Email:       email,

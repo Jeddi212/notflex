@@ -13,7 +13,7 @@ var tokenName = "token"
 
 type Claims struct {
 	Email    string `json:"email"`
-	UserType int    `json:user_type`
+	UserType int    `json:"user_type"`
 	jwt.StandardClaims
 }
 

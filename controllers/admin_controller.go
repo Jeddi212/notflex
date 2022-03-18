@@ -38,7 +38,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	var creditResponse model.CreditResponse
 
 	// If a record found
-	if errors.Is(err, gorm.ErrRecordNotFound) == false {
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
 		// Find user data by email
 		db.Where("user_id = ?", user.Email).Find(&creditCard)
 
