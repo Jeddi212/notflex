@@ -120,6 +120,7 @@ func GetFilmById(w http.ResponseWriter, r *http.Request) {
 	// Get FilmId from request
 	vars := mux.Vars(r)
 	idFilm := vars["id_film"]
+	fmt.Println(idFilm)
 
 	// Set object model to hold film data
 	var films []model.Film
