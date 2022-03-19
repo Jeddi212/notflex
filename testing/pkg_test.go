@@ -27,14 +27,6 @@ func TestReturnGeeks(t *testing.T) {
 	}
 }
 
-func TestLogin(t *testing.T) {
-	router := mux.NewRouter()
-	request, _ := http.NewRequest("POST", "/", nil)
-	response := httptest.NewRecorder()
-	router.HandleFunc("/login", c.CheckUserLogin).Methods("POST").GetHandler().ServeHTTP(response, request)
-	t.Error(response.Body)
-}
-
 func TestGetUser(t *testing.T) {
 	router := mux.NewRouter()
 
@@ -42,7 +34,7 @@ func TestGetUser(t *testing.T) {
 	// request, _ := http.NewRequest("GET", "/get-user?email=jeddi@gmail.com", nil)
 
 	//no content
-	request, _ := http.NewRequest("GET", "/get-user", nil)
+	request, _ := http.NewRequest("GET", "/get-user?email=lalala@gmail.com", nil)
 
 	response := httptest.NewRecorder()
 	router.HandleFunc("/get-user", c.GetUser).Methods("GET").GetHandler().ServeHTTP(response, request)
@@ -57,47 +49,24 @@ func TestGetUser(t *testing.T) {
 	}
 }
 
-func TestSearchHistories(t *testing.T) {
+func TestSearchFilm(t *testing.T) {
 	router := mux.NewRouter()
 
 	//success
-	// request, _ := http.NewRequest("GET", "/search-histories?email=jedediah@gmail.com", nil)
+	request, _ := http.NewRequest("GET", "/search-film?year=2006", nil)
 
 	//no content
-	request, _ := http.NewRequest("GET", "/search-histories", nil)
+	// request, _ := http.NewRequest("GET", "/search-film?year=2022", nil)
 
 	response := httptest.NewRecorder()
-	router.HandleFunc("/search-histories", c.GetAllHistories).Methods("GET").GetHandler().ServeHTTP(response, request)
+	router.HandleFunc("/search-film", c.SearchFilm).Methods("GET").GetHandler().ServeHTTP(response, request)
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-	var historyResponse models.HistoryResponse
-	json.Unmarshal(body, &historyResponse)
-	if historyResponse.Status == 204 {
-		t.Error(historyResponse.Message)
+	var filmResponse models.FilmResponse
+	json.Unmarshal(body, &filmResponse)
+	if filmResponse.Status == 400 {
+		t.Error(filmResponse.Message)
 	}
-}
-
-func TestGetFilmById(t *testing.T) {
-	router := mux.NewRouter()
-
-	//success
-	// request, _ := http.NewRequest("GET", "/search-film-by-id/1", nil)
-
-	//no content
-	request, _ := http.NewRequest("GET", "/search-film-by-id/10", nil)
-
-	response := httptest.NewRecorder()
-	router.HandleFunc("/search-film-by-id", c.GetFilmById).Methods("GET").GetHandler().ServeHTTP(response, request)
-	// body, err := ioutil.ReadAll(response.Body)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// var filmResponse models.FilmResponse
-	// json.Unmarshal(body, &filmResponse)
-	// if filmResponse.Status == 204 {
-	// 	t.Error(filmResponse.Message)
-	// }
-	t.Error(response.Body)
 }
