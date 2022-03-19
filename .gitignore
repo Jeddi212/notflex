@@ -20,3 +20,4 @@
 # Mod init
 *.mod
 *.sum
+._DS_Store
